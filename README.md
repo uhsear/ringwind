@@ -67,7 +67,7 @@ PASS  a failed write leaves the previous file intact  <-- pinned defect
 PASS  and leaves no half-written temporary file behind  <-- pinned defect
 PASS  the self-test leaves no temporary directory behind
 --------------------------------------------------------------------
-141 assertions, 0 failed
+142 assertions, 0 failed
 ```
 
 ## Requirements

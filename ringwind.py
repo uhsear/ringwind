@@ -394,6 +394,7 @@ def _parse(argv):
                     "declared, and exit non-zero.",
         epilog="Nothing is written without --apply. A degenerate ring is never "
                "rewound, because it has no winding to correct.",
+        allow_abbrev=False,
     )
     ap.add_argument("path", nargs="?", metavar="GEOJSON",
                     help="the .geojson file to check, or - for standard input")
@@ -864,6 +865,17 @@ def self_test():
           "no argument at all parses, so main can print its own message")
     check(_parse(["-"]).path == "-",
           "a single dash is accepted as the path and means standard input")
+    saved_err = sys.stderr
+    sys.stderr = io.StringIO()
+    try:
+        _parse(["a.geojson", "--ap"])
+        refused = False
+    except SystemExit as exc:
+        refused = exc.code == 2
+    finally:
+        sys.stderr = saved_err
+    check(refused, "a unique prefix of --apply is refused, not read as --apply  "
+                   "<-- pinned defect")
 
     # ---- the io layer, against real files
     tmp = tempfile.mkdtemp(prefix="ringwind-selftest-")
